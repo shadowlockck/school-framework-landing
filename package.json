@@ -1,0 +1,1 @@
+{"name":"school-framework-landing","private":true,"scripts":{"dev:cms":"npm --prefix cms run dev","dev:frontend":"npm --prefix frontend run dev","build:cms":"npm --prefix cms run build","build:frontend":"npm --prefix frontend run build","check:cms":"npm --prefix cms run check","seed":"npm --prefix cms run seed"}}
