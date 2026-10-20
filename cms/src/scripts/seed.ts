@@ -1,5 +1,13 @@
 import { getPayload } from 'payload'
-import config from '../payload.config'
+import { existsSync } from 'node:fs'
+
+// This script runs outside Next.js, so load the local environment before
+// importing the Payload config. Deployed environments can supply variables directly.
+if (existsSync('.env')) process.loadEnvFile('.env')
+if (!process.env.DATABASE_URL) {
+  throw new Error('Set DATABASE_URL to a PostgreSQL connection string in cms/.env before seeding.')
+}
+const { default: config } = await import('../payload.config')
 
 const pypi = 'https://pypi.org/project/django-school-framework/'
 const github = 'https://github.com/shadowlockck/framewrok-for-school'
