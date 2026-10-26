@@ -17,6 +17,7 @@ cd cms
 cp .env.example .env
 # заповніть DATABASE_URL, PAYLOAD_SECRET, SERVER_URL, FRONTEND_ORIGIN
 npm ci
+npm run migrate
 npm run dev
 ```
 
@@ -29,7 +30,7 @@ npm ci
 npm run dev
 ```
 
-CMS: `http://localhost:3000/admin`; сайт: `http://localhost:5173`. При першому запуску створіть редактора через приватний екран Payload у `/admin`. Публічної реєстрації редакторів немає. Після запуску CMS виконайте `cd cms && npm run seed`, щоб створити головну сторінку та глобальні елементи. Повторний запуск не перезаписує вже створений вміст. Зміна тексту або порядку блоків у `/admin` з’явиться на сайті після оновлення (API має кеш до 60 секунд).
+CMS: `http://localhost:3000/admin`; сайт: `http://127.0.0.1:5173`. Якщо Vite зайняв інший порт, додайте фактичну адресу з його виводу до `FRONTEND_ORIGIN` у `cms/.env` і перезапустіть CMS. При першому запуску створіть редактора через приватний екран Payload у `/admin`. Публічної реєстрації редакторів немає. Після запуску CMS виконайте `cd cms && npm run seed`, щоб створити головну сторінку та глобальні елементи. Повторний запуск не перезаписує вже створений вміст. Зміна тексту або порядку блоків у `/admin` з’явиться на сайті після оновлення (API має кеш до 60 секунд).
 
 `PAYLOAD_SECRET` має бути довгим випадковим рядком. `DATABASE_URL` — сумісний PostgreSQL connection string; для Neon використовуйте SSL-параметри з панелі Neon. У `frontend/.env` дозволений лише публічний `VITE_CMS_URL`; жодних секретів у `VITE_*`.
 
@@ -40,7 +41,7 @@ cd cms && npm run check && npm run build
 cd frontend && npm run build
 ```
 
-Початкова міграція вже закомічена в `cms/src/migrations/`. У dev Payload автоматично синхронізує схему з dev-БД. Після змін схеми створіть міграцію командою `cd cms && npm run migrate:create -- назва`, перевірте та закомітьте файл у `src/migrations/`. До production деплою застосуйте всі закомічені міграції: `cd cms && npm run migrate`. Для застосування міграцій потрібна доступна БД. Згідно з [документацією Payload](https://payloadcms.com/docs/database/migrations), production не повинен покладатися на dev auto-push.
+Початкова міграція вже закомічена в `cms/src/migrations/`. Автоматичне оновлення схеми у dev вимкнено: перед запуском CMS застосуйте міграції через `npm run migrate`. Після змін схеми створіть міграцію командою `cd cms && npm run migrate:create -- назва`, перевірте та закомітьте файл у `src/migrations/`. До production деплою застосуйте всі закомічені міграції: `cd cms && npm run migrate`. Для застосування міграцій потрібна доступна БД. Детальніше — у [документації Payload](https://payloadcms.com/docs/database/migrations).
 
 ## Публічний API
 

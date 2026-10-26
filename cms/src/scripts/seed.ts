@@ -13,6 +13,7 @@ const pypi = 'https://pypi.org/project/django-school-framework/'
 const github = 'https://github.com/shadowlockck/framewrok-for-school'
 const payload = await getPayload({ config })
 
+async function seed() {
 const currentHeader = await payload.findGlobal({ slug: 'header' })
 if (!currentHeader.brand) await payload.updateGlobal({ slug: 'header', data: {
   brand: 'Django School Framework', tagline: 'Основа для сайту школи',
@@ -64,4 +65,13 @@ else {
   await payload.create({ collection: 'pages', data: { ...data, layout: data.layout as any, _status: 'published' }, overrideAccess: true })
   console.log('Головну сторінку створено.')
 }
-await payload.db.destroy?.()
+}
+
+try {
+  await seed()
+  await payload.destroy()
+  process.exit(0)
+} catch (error) {
+  console.error(error)
+  process.exit(1)
+}
