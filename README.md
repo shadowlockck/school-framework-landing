@@ -2,6 +2,8 @@
 
 Маркетинговий сайт українською для [Django School Framework](https://github.com/shadowlockck/framewrok-for-school). Це окремий застосунок, а не код самого фреймворку. Вміст сторінки редагується в Payload CMS; публічний сайт — Vite і звичайний JavaScript.
 
+**Публічні адреси:** [лендінг](http://4.165.133.94/landing/) · [документація Django](http://4.165.133.94/). Зараз сайт розміщено на Azure VPS; база CMS — Neon PostgreSQL. HTTPS і публічний доступ до CMS Admin ще не налаштовані. Для редагування використовуйте SSH-тунель із [посібника з розгортання](deploy/README.md).
+
 ## Структура
 
 - `cms/` — Payload 3, Next.js, PostgreSQL (Neon у production), адмінка `/admin`, публічні DTO endpoints.
@@ -55,11 +57,15 @@ cd frontend && npm run build
 
 На фронтенді адреси посилань перевіряються; URL із CMS не вставляються як HTML. Початкові SEO-теги для головної сторінки є в `frontend/index.html`; для повноцінного індексування додаткових CMS-сторінок потрібен окремий prerender або SSR.
 
-## Vercel + Neon
+## Поточне розгортання: Azure VPS + Neon
+
+Фронтенд збирається для шляху `/landing/`, а Nginx віддає статику поряд із документацією на `/`. Payload працює на `127.0.0.1:3000`; публічно проксуються лише API `/api/common` і `/api/page`. Команди збірки, шляхи на сервері та SSH-тунель наведені в [deploy/README.md](deploy/README.md). Змінні з `cms/.env` зберігаються лише на сервері, поза Git.
+
+## Альтернативне розгортання: Vercel + Neon
 
 1. Створіть **два Vercel-проєкти** з цього Git-репозиторію. Для CMS Root Directory `cms`, Framework Preset Next.js. Для сайту Root Directory `frontend`, Framework Preset Vite, Output Directory `dist`.
 2. Створіть Neon PostgreSQL і окрему гілку для dev. У CMS Production Environment Variables додайте `DATABASE_URL`, `PAYLOAD_SECRET`, `SERVER_URL` (публічний HTTPS-домен CMS), `FRONTEND_ORIGIN` (точний HTTPS-домен сайту). Для frontend — `VITE_CMS_URL` (той самий CMS-домен). Для preview використовуйте окремі точні origins або preview-конфігурацію.
 3. Застосуйте закомічену початкову міграцію до production Neon через `npm run migrate` з production `DATABASE_URL` у захищеному середовищі **перед** production-збіркою. Для міграцій перевірте в Neon, чи потрібне пряме з’єднання замість pooled URL. Далі один раз виконайте `npm run seed` із доступом до production БД і створіть редактора приватно в `/admin`.
 4. Перевірте `/admin`, `/api/common`, `/api/page?path=/`, CORS, головну та внутрішній маршрут. `frontend/vercel.json` спрямовує вкладені маршрути до `index.html`.
 
-Редакторських завантажень файлів у v1 немає. Якщо додасте Payload Media на Vercel, налаштуйте постійне сховище (S3/Vercel Blob), бо локальні файли там непостійні. Публічний URL документації не включено, поки його доступність не підтверджена.
+Редакторських завантажень файлів у v1 немає. Якщо додасте Payload Media на Vercel, налаштуйте постійне сховище (S3/Vercel Blob), бо локальні файли там непостійні. При перенесенні змініть адреси документації та лендінгу в CMS і фронтенді.
