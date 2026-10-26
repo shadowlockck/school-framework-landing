@@ -1,4 +1,4 @@
-const base = (import.meta.env.VITE_CMS_URL || 'http://localhost:3000').replace(/\/$/, '')
+const base = (import.meta.env.VITE_CMS_URL ?? 'http://localhost:3000').replace(/\/$/, '')
 async function get(route) {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 8000)

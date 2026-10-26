@@ -1,3 +1,5 @@
+import { siteURL } from './sitePath'
+
 export const el = (tag, className = '', content = '') => {
   const node = document.createElement(tag)
   if (className) node.className = className
@@ -6,7 +8,7 @@ export const el = (tag, className = '', content = '') => {
 }
 export const safeURL = (value) => {
   if (typeof value !== 'string' || !value.trim()) return null
-  if (/^\/(?!\/)[^\s]*$/.test(value)) return value
+  if (/^\/(?!\/)[^\s]*$/.test(value)) return siteURL(value)
   try { const url = new URL(value); return url.protocol === 'https:' ? url.href : null } catch { return null }
 }
 export const anchor = (item, className = '') => {

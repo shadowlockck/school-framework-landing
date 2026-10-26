@@ -6,12 +6,13 @@ import { header } from './components/header'
 import { footer } from './components/footer'
 import { renderBlocks } from './renderBlocks'
 import { el, append } from './dom'
+import { pagePath } from './sitePath'
 
 const app = document.querySelector('#app')
 async function show() {
   const main = el('main', 'loading'); main.id = 'main'; main.setAttribute('role', 'status'); main.textContent = 'Завантажуємо сторінку…'; app.replaceChildren(main)
   try {
-    const [common, page] = await loadContent(location.pathname)
+    const [common, page] = await loadContent(pagePath(location.pathname))
     document.title = page.meta.title || common.site.title
     document.querySelector('meta[name="description"]').content = page.meta.description || common.site.description
     const content = el('main'); content.id = 'main'
