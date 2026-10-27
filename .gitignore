@@ -5,3 +5,4 @@ dist/
 .env
 .env.*.local
 *.tsbuildinfo
+IMPLEMENTATION_PLAN.md

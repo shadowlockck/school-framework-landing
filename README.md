@@ -8,7 +8,6 @@
 
 - `cms/` — Payload 3, Next.js, PostgreSQL (Neon у production), адмінка `/admin`, публічні DTO endpoints.
 - `frontend/` — Vite, vanilla JS, адаптивний лендінг.
-- `IMPLEMENTATION_PLAN.md` — вихідні вимоги та обґрунтування.
 
 ## Локальний запуск
 
